@@ -1051,6 +1051,138 @@
   .reveal-delay-4 { transition-delay: 0.4s; }
 
   /* ============================================================
+     HAMBURGER & MOBILE DRAWER
+  ============================================================ */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    background: none;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    padding: 0;
+    transition: border-color 0.2s;
+    flex-shrink: 0;
+  }
+
+  .nav-hamburger:hover { border-color: var(--ink-40); }
+
+  .ham-bar {
+    display: block;
+    width: 18px; height: 1.5px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center;
+  }
+
+  /* Animated X state */
+  .nav-hamburger.is-open .ham-bar:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-hamburger.is-open .ham-bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-hamburger.is-open .ham-bar:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* Full-screen mobile drawer */
+  .mobile-drawer {
+    display: none;
+    position: fixed;
+    top: 72px; left: 0; right: 0;
+    z-index: 99;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+  }
+
+  .mobile-drawer.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .mobile-drawer-inner {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .mobile-nav-links {
+    list-style: none;
+    margin-bottom: 8px;
+  }
+
+  .mobile-nav-links li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .mobile-nav-links li a::after {
+    content: '→';
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--ink-40);
+    transition: transform 0.2s, color 0.2s;
+  }
+
+  .mobile-nav-links li a:hover { color: var(--flame-1); }
+  .mobile-nav-links li a:hover::after { transform: translateX(4px); color: var(--flame-1); }
+
+  .mobile-nav-links li:last-child a { border-bottom: none; }
+
+  .mobile-nav-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    margin-top: 4px;
+  }
+
+  .mobile-drawer-footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-40);
+    padding-top: 16px;
+    font-weight: 300;
+  }
+
+  /* Overlay */
+  .mobile-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 72px;
+    background: rgba(0,0,0,0.3);
+    z-index: 98;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    backdrop-filter: blur(2px);
+  }
+
+  .mobile-overlay.is-open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* ============================================================
      RESPONSIVE
   ============================================================ */
   /* ============================================================
@@ -1290,7 +1422,7 @@
     .about-standout-right { align-items: flex-start; }
     .about-tagline { white-space: normal; }
     .container { padding: 0 24px; }
-    section { padding: 80px 0; }
+    section { padding: 80px 0; scroll-margin-top: 80px; }
     .hero-content { grid-template-columns: 1fr; gap: 48px; }
     .hero-visual { order: -1; }
     .hero-machine-card { max-width: 100%; }
@@ -1304,7 +1436,13 @@
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
     .cta-box { padding: 60px 36px; }
     nav { padding: 0 24px; }
+    /* Hide desktop nav elements */
     .nav-links { display: none; }
+    .nav-cta { display: none; }
+    /* Show hamburger and drawer */
+    .nav-hamburger { display: flex; }
+    .mobile-drawer { display: block; }
+    .mobile-overlay { display: block; }
   }
 
   @media (max-width: 600px) {
@@ -1323,13 +1461,9 @@
 <nav id="navbar">
   <a href="#" class="nav-logo">
     <svg class="nav-logo-icon" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-      <!-- Outer ring -->
       <circle cx="16" cy="16" r="15" fill="none" stroke="#5C3317" stroke-width="1.4"/>
-      <!-- Inner ring -->
       <circle cx="16" cy="16" r="12.2" fill="none" stroke="#5C3317" stroke-width="0.7"/>
-      <!-- Z letterform -->
       <text x="16" y="20.5" font-family="Georgia,serif" font-weight="700" font-size="13" fill="#5C3317" text-anchor="middle">Z</text>
-      <!-- Steam wisps above Z -->
       <path d="M14.5 7.5 Q14 6.2 14.5 5.2" fill="none" stroke="#5C3317" stroke-width="0.8" stroke-linecap="round"/>
       <path d="M16 7 Q15.5 5.8 16 4.8" fill="none" stroke="#5C3317" stroke-width="0.8" stroke-linecap="round"/>
       <path d="M17.5 7.5 Q17 6.2 17.5 5.2" fill="none" stroke="#5C3317" stroke-width="0.8" stroke-linecap="round"/>
@@ -1348,7 +1482,33 @@
     <a href="mailto:info@zandarcoffee.com" class="btn btn--ghost" style="padding:10px 20px; font-size:13px;">Inquire</a>
     <a href="mailto:info@zandarcoffee.com" class="btn btn--primary" style="padding:10px 20px; font-size:13px;">Get a Quote</a>
   </div>
+
+  <!-- Hamburger button (mobile only) -->
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span class="ham-bar"></span>
+    <span class="ham-bar"></span>
+    <span class="ham-bar"></span>
+  </button>
 </nav>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="mobile-drawer-inner">
+    <ul class="mobile-nav-links">
+      <li><a href="#machines">Machines</a></li>
+      <li><a href="#how-it-works">Process</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="mobile-nav-cta">
+      <a href="mailto:info@zandarcoffee.com" class="btn btn--ghost" style="width:100%; justify-content:center;">Inquire</a>
+      <a href="mailto:info@zandarcoffee.com" class="btn btn--primary" style="width:100%; justify-content:center;">Get a Quote</a>
+    </div>
+    <div class="mobile-drawer-footer">info@zandarcoffee.com</div>
+  </div>
+</div>
+<!-- Overlay -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
 
 
 <!-- ============================================================
@@ -2010,7 +2170,39 @@
      SCRIPTS
 ============================================================ -->
 <script>
-  // Scroll reveal
+  // Mobile nav hamburger
+  const hamburger = document.getElementById('navHamburger');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('mobileOverlay');
+
+  function openMenu() {
+    hamburger.classList.add('is-open');
+    drawer.classList.add('is-open');
+    overlay.classList.add('is-open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    hamburger.classList.remove('is-open');
+    drawer.classList.remove('is-open');
+    overlay.classList.remove('is-open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.contains('is-open') ? closeMenu() : openMenu();
+  });
+
+  overlay.addEventListener('click', closeMenu);
+
+  // Close drawer when a mobile nav link is clicked
+  document.querySelectorAll('.mobile-nav-links a').forEach(a => {
+    a.addEventListener('click', closeMenu);
+  });
+
+
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
