@@ -1043,8 +1043,524 @@
   }
 
   /* ============================================================
-     SCROLL ANIMATIONS
+     BOOKING FORM SECTION
   ============================================================ */
+  .booking-section {
+    background: var(--espresso);
+    padding: 120px 0;
+    scroll-margin-top: 80px;
+  }
+
+  .booking-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .booking-header .t-label { color: var(--crema); }
+  .booking-header .t-h1 { color: var(--white); }
+  .booking-header .t-body { color: rgba(250,245,236,0.55); margin-left: auto; margin-right: auto; }
+
+  .booking-wrap { max-width: 780px; margin: 0 auto; }
+
+  /* Progress bar */
+  .booking-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 36px;
+    gap: 0;
+  }
+
+  .progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .progress-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(212,169,106,0.25);
+    background: var(--dark-roast);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .progress-dot::after {
+    content: '';
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.3s ease;
+  }
+
+  .progress-step.active .progress-dot {
+    border-color: var(--caramel);
+    background: var(--gradient);
+  }
+
+  .progress-step.active .progress-dot::after { background: white; }
+
+  .progress-step.done .progress-dot {
+    border-color: var(--cinnamon);
+    background: var(--mocha);
+  }
+
+  .progress-step.done .progress-dot::after {
+    content: '✓';
+    background: transparent;
+    color: var(--crema);
+    font-size: 11px;
+    font-weight: 700;
+    width: auto; height: auto;
+    position: absolute;
+  }
+
+  .progress-step span {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(212,169,106,0.35);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: color 0.3s;
+  }
+
+  .progress-step.active span { color: var(--crema); }
+  .progress-step.done span { color: rgba(212,169,106,0.6); }
+
+  .progress-line {
+    flex: 1;
+    height: 1px;
+    background: rgba(212,169,106,0.15);
+    margin: 0 8px;
+    margin-bottom: 26px;
+    max-width: 60px;
+    transition: background 0.3s;
+  }
+
+  .progress-line.done { background: rgba(160,82,45,0.5); }
+
+  /* Form card */
+  .booking-form-card {
+    background: var(--parchment);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.2);
+  }
+
+  /* Form steps */
+  .form-step {
+    display: none;
+    padding: 48px 52px;
+    animation: stepIn 0.35s ease;
+  }
+
+  .form-step.active { display: block; }
+
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .form-step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-step-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 800;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .form-step-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .form-step-sub {
+    font-size: 14px;
+    color: var(--ink-40);
+    font-weight: 300;
+  }
+
+  /* Grid layout */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+
+  .form-field--full { grid-column: 1 / -1; }
+
+  /* Field styles */
+  .field-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: 0.01em;
+  }
+
+  .field-req { color: var(--cinnamon); }
+  .field-optional { color: var(--ink-40); font-weight: 400; font-size: 12px; }
+
+  .field-hint {
+    font-size: 12px;
+    color: var(--ink-40);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .field-input {
+    width: 100%;
+    padding: 13px 16px;
+    background: var(--white);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .field-input:focus {
+    border-color: var(--cinnamon);
+    box-shadow: 0 0 0 3px rgba(160,82,45,0.12);
+  }
+
+  .field-input::placeholder { color: var(--ink-40); }
+
+  .field-select {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%236B3320' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
+  .field-textarea {
+    resize: vertical;
+    min-height: 96px;
+    line-height: 1.6;
+  }
+
+  /* Phone prefix */
+  .field-prefix-wrap {
+    display: flex;
+    align-items: stretch;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .field-prefix-wrap:focus-within {
+    border-color: var(--cinnamon);
+    box-shadow: 0 0 0 3px rgba(160,82,45,0.12);
+  }
+
+  .field-prefix {
+    padding: 13px 14px;
+    background: var(--oat);
+    border-right: 1.5px solid var(--border-strong);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mahogany);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .field-input--prefixed {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .field-input--prefixed:focus { box-shadow: none; }
+
+  /* Business type grid */
+  .biz-type-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .biz-type-option input { display: none; }
+
+  .biz-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 12px;
+    background: var(--white);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-70);
+    text-align: center;
+  }
+
+  .biz-type-card:hover { border-color: var(--cinnamon); background: var(--oat); }
+  .biz-type-option input:checked + .biz-type-card {
+    border-color: var(--cinnamon);
+    background: linear-gradient(135deg, rgba(160,82,45,0.08), rgba(196,122,43,0.06));
+    color: var(--mahogany);
+    box-shadow: 0 0 0 3px rgba(160,82,45,0.10);
+  }
+
+  .biz-type-icon { font-size: 22px; }
+
+  /* Counter */
+  .counter-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    width: fit-content;
+  }
+
+  .counter-btn {
+    width: 44px; height: 48px;
+    background: var(--oat);
+    border: none;
+    font-size: 20px;
+    color: var(--mahogany);
+    cursor: pointer;
+    font-weight: 700;
+    transition: background 0.15s;
+    flex-shrink: 0;
+  }
+
+  .counter-btn:hover { background: var(--latte); }
+
+  .counter-val {
+    width: 56px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    border-left: 1.5px solid var(--border-strong);
+    border-right: 1.5px solid var(--border-strong);
+    padding: 10px 0;
+  }
+
+  /* Yes/No toggle */
+  .toggle-wrap {
+    display: flex;
+    gap: 8px;
+  }
+
+  .toggle-option input { display: none; }
+
+  .toggle-pill {
+    display: inline-block;
+    padding: 10px 28px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-70);
+    background: var(--white);
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .toggle-pill:hover { border-color: var(--cinnamon); }
+  .toggle-option input:checked + .toggle-pill {
+    background: var(--gradient);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 3px 12px rgba(74,37,17,0.25);
+  }
+
+  /* Issue selector */
+  .issue-options {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+
+  .issue-option input { display: none; }
+
+  .issue-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 8px;
+    background: var(--white);
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .issue-card:hover { border-color: var(--cinnamon); background: var(--oat); }
+  .issue-option input:checked + .issue-card {
+    border-color: var(--cinnamon);
+    background: linear-gradient(135deg, rgba(160,82,45,0.08), rgba(196,122,43,0.05));
+    box-shadow: 0 0 0 3px rgba(160,82,45,0.10);
+  }
+
+  .issue-icon { font-size: 24px; }
+  .issue-label { font-size: 12px; font-weight: 600; color: var(--ink); letter-spacing: 0.01em; }
+
+  /* Urgency */
+  .urgency-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .urgency-option input { display: none; }
+
+  .urgency-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 22px 16px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    background: var(--white);
+  }
+
+  .urgency-card--red:hover { border-color: #B03020; background: rgba(176,48,32,0.04); }
+  .urgency-card--amber:hover { border-color: var(--caramel); background: rgba(196,122,43,0.06); }
+  .urgency-card--green:hover { border-color: #4A7C59; background: rgba(74,124,89,0.04); }
+
+  .urgency-option input:checked + .urgency-card--red {
+    border-color: #B03020;
+    background: rgba(176,48,32,0.07);
+    box-shadow: 0 0 0 3px rgba(176,48,32,0.10);
+  }
+
+  .urgency-option input:checked + .urgency-card--amber {
+    border-color: var(--caramel);
+    background: rgba(196,122,43,0.08);
+    box-shadow: 0 0 0 3px rgba(196,122,43,0.12);
+  }
+
+  .urgency-option input:checked + .urgency-card--green {
+    border-color: #4A7C59;
+    background: rgba(74,124,89,0.07);
+    box-shadow: 0 0 0 3px rgba(74,124,89,0.10);
+  }
+
+  .urgency-icon { font-size: 26px; }
+  .urgency-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--ink); }
+  .urgency-sub { font-size: 12px; color: var(--ink-40); font-weight: 300; }
+
+  /* Form actions */
+  .form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    gap: 16px;
+  }
+
+  /* Success state */
+  .form-success {
+    text-align: center;
+    padding: 72px 52px !important;
+  }
+
+  .success-icon {
+    margin: 0 auto 24px;
+    width: 48px;
+  }
+
+  .success-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .success-body {
+    font-size: 16px;
+    color: var(--ink-70);
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0 auto 32px;
+  }
+
+  .success-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--oat);
+    border-radius: var(--radius-lg);
+    padding: 24px 32px;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .success-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--ink-70);
+    font-weight: 400;
+  }
+
+  /* Responsive form */
+  @media (max-width: 680px) {
+    .form-step { padding: 32px 24px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .biz-type-grid { grid-template-columns: repeat(2, 1fr); }
+    .issue-options { grid-template-columns: repeat(3, 1fr); }
+    .urgency-options { grid-template-columns: 1fr; }
+    .booking-progress { gap: 0; }
+    .progress-line { max-width: 28px; }
+    .progress-step span { font-size: 9px; }
+    .progress-dot { width: 26px; height: 26px; }
+  }
+
+
   .reveal {
     opacity: 0;
     transform: translateY(24px);
@@ -1490,8 +2006,8 @@
   </ul>
 
   <div class="nav-cta">
-    <a href="mailto:info@zandarcoffee.com" class="btn btn--ghost" style="padding:10px 20px; font-size:13px;">Book a Repair</a>
-    <a href="mailto:info@zandarcoffee.com" class="btn btn--primary" style="padding:10px 20px; font-size:13px;">Request Service</a>
+    <a href="#contact" class="btn btn--ghost" style="padding:10px 20px; font-size:13px;">Book a Repair</a>
+    <a href="#contact" class="btn btn--primary" style="padding:10px 20px; font-size:13px;">Request Service</a>
   </div>
 
   <!-- Hamburger button (mobile only) -->
@@ -1512,8 +2028,8 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="mobile-nav-cta">
-      <a href="mailto:info@zandarcoffee.com" class="btn btn--ghost" style="width:100%; justify-content:center;">Book a Repair</a>
-      <a href="mailto:info@zandarcoffee.com" class="btn btn--primary" style="width:100%; justify-content:center;">Request Service</a>
+      <a href="#contact" class="btn btn--ghost" style="width:100%; justify-content:center;">Book a Repair</a>
+      <a href="#contact" class="btn btn--primary" style="width:100%; justify-content:center;">Request Service</a>
     </div>
     <div class="mobile-drawer-footer">info@zandarcoffee.com</div>
   </div>
@@ -1551,7 +2067,7 @@
         </p>
 
         <div class="hero-actions">
-          <a href="mailto:info@zandarcoffee.com" class="btn btn--primary btn--large">
+          <a href="#contact" class="btn btn--primary btn--large">
             Book a Repair
             <svg class="btn-arrow" viewBox="0 0 18 18" fill="none">
               <path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1621,7 +2137,7 @@
 
           <div class="machine-footer">
             <div class="machine-tag">Contact for Pricing</div>
-            <a href="mailto:info@zandarcoffee.com" class="machine-action">
+            <a href="#contact" class="machine-action">
               Book a Repair
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M2 7H12M8 3L12 7L8 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1810,7 +2326,7 @@
               <div class="price-label">Pricing</div>
               <div class="price-value">On Inquiry</div>
             </div>
-            <a href="mailto:info@zandarcoffee.com" class="btn btn--primary">Book a Repair</a>
+            <a href="#contact" class="btn btn--primary">Book a Repair</a>
           </div>
         </div>
       </div>
@@ -1836,7 +2352,7 @@
               <div class="price-label">Pricing</div>
               <div class="price-value">On Inquiry</div>
             </div>
-            <a href="mailto:info@zandarcoffee.com" class="btn btn--primary">Book a Repair</a>
+            <a href="#contact" class="btn btn--primary">Book a Repair</a>
           </div>
         </div>
       </div>
@@ -2010,7 +2526,7 @@
         <div class="about-tagline">
           Zandar Coffee — <em>Precision. Performance. Perfection in every cup.</em>
         </div>
-        <a href="mailto:info@zandarcoffee.com" class="btn btn--primary" style="margin-top:20px;">
+        <a href="#contact" class="btn btn--primary" style="margin-top:20px;">
           Book a Repair
           <svg class="btn-arrow" viewBox="0 0 18 18" fill="none">
             <path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -2072,30 +2588,342 @@
 <!-- ============================================================
      CTA
 ============================================================ -->
-<section class="cta-section" id="contact">
+<section class="booking-section" id="contact">
   <div class="container">
-    <div class="cta-box reveal">
-      <div class="t-label" style="color:rgba(212,169,106,0.9); margin-bottom:20px;">Ready to Upgrade?</div>
-      <h2 class="cta-title">
-        Your machine needs<br>expert care.
-      </h2>
-      <p class="cta-sub">
-        Need a repair or service for your espresso machine? We'll handle everything — fast, professional, and reliable.
-      </p>
-      <div class="cta-actions">
-        <a href="mailto:info@zandarcoffee.com" class="btn btn--primary btn--large">
-          Book a Repair
-          <svg class="btn-arrow" viewBox="0 0 18 18" fill="none">
-            <path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="mailto:info@zandarcoffee.com" class="btn btn--ghost btn--large" style="color:rgba(212,169,106,0.85); border-color:rgba(212,169,106,0.25);">info@zandarcoffee.com</a>
-      </div>
-      <div class="cta-email">
-        <span>Available for hotels, restaurants, and cafés across</span>
-        <a href="#">Zanzibar &amp; Dar es Salaam</a>
-      </div>
+
+    <div class="booking-header reveal">
+      <div class="t-label" style="margin-bottom:16px;">Book a Repair &amp; Request Service</div>
+      <h2 class="t-h1">Your machine needs<br><span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">expert care.</span></h2>
+      <p class="t-body" style="max-width:540px; margin: 16px auto 0;">Fast, professional espresso machine repair across Zanzibar &amp; Dar es Salaam. Fill in the form and we'll be in touch within hours.</p>
     </div>
+
+    <div class="booking-wrap reveal reveal-delay-1">
+
+      <!-- Progress bar -->
+      <div class="booking-progress">
+        <div class="progress-step active" data-step="1">
+          <div class="progress-dot"></div>
+          <span>Customer</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="2">
+          <div class="progress-dot"></div>
+          <span>Business</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="3">
+          <div class="progress-dot"></div>
+          <span>Machine</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="4">
+          <div class="progress-dot"></div>
+          <span>Issue</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step" data-step="5">
+          <div class="progress-dot"></div>
+          <span>Schedule</span>
+        </div>
+      </div>
+
+      <div class="booking-form-card">
+
+        <!-- ── STEP 1: Customer Info ── -->
+        <div class="form-step active" id="step-1">
+          <div class="form-step-header">
+            <div class="form-step-num">01</div>
+            <div>
+              <div class="form-step-title">Customer Information</div>
+              <div class="form-step-sub">Tell us who you are so we can reach you</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field form-field--full">
+              <label class="field-label">Full Name <span class="field-req">*</span></label>
+              <input type="text" class="field-input" id="f-name" placeholder="e.g. Ahmed Hassan" autocomplete="name">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Phone Number <span class="field-req">*</span></label>
+              <div class="field-prefix-wrap">
+                <span class="field-prefix">+255</span>
+                <input type="tel" class="field-input field-input--prefixed" id="f-phone" placeholder="712 345 678" autocomplete="tel">
+              </div>
+              <div class="field-hint">Primary contact — we'll call or WhatsApp you</div>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Email Address</label>
+              <input type="email" class="field-input" id="f-email" placeholder="you@example.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="form-actions">
+            <div></div>
+            <button class="btn btn--primary" onclick="goStep(2)">Next — Business Info <svg class="btn-arrow" viewBox="0 0 18 18" fill="none"><path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- ── STEP 2: Business Info ── -->
+        <div class="form-step" id="step-2">
+          <div class="form-step-header">
+            <div class="form-step-num">02</div>
+            <div>
+              <div class="form-step-title">Business Information</div>
+              <div class="form-step-sub">Help us understand your operation</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field form-field--full">
+              <label class="field-label">Business Name <span class="field-req">*</span></label>
+              <input type="text" class="field-input" id="f-biz-name" placeholder="e.g. Stone Town Hotel">
+            </div>
+            <div class="form-field form-field--full">
+              <label class="field-label">Location / Address <span class="field-req">*</span></label>
+              <input type="text" class="field-input" id="f-location" placeholder="e.g. Shangani Street, Stone Town, Zanzibar">
+            </div>
+            <div class="form-field form-field--full">
+              <label class="field-label">Type of Business <span class="field-req">*</span></label>
+              <div class="biz-type-grid">
+                <label class="biz-type-option">
+                  <input type="radio" name="biz-type" value="Hotel">
+                  <span class="biz-type-card"><span class="biz-type-icon">🏨</span><span>Hotel</span></span>
+                </label>
+                <label class="biz-type-option">
+                  <input type="radio" name="biz-type" value="Café">
+                  <span class="biz-type-card"><span class="biz-type-icon">☕</span><span>Café</span></span>
+                </label>
+                <label class="biz-type-option">
+                  <input type="radio" name="biz-type" value="Restaurant">
+                  <span class="biz-type-card"><span class="biz-type-icon">🍽️</span><span>Restaurant</span></span>
+                </label>
+                <label class="biz-type-option">
+                  <input type="radio" name="biz-type" value="Office">
+                  <span class="biz-type-card"><span class="biz-type-icon">🏢</span><span>Office</span></span>
+                </label>
+                <label class="biz-type-option">
+                  <input type="radio" name="biz-type" value="Resort">
+                  <span class="biz-type-card"><span class="biz-type-icon">🌴</span><span>Resort</span></span>
+                </label>
+                <label class="biz-type-option">
+                  <input type="radio" name="biz-type" value="Other">
+                  <span class="biz-type-card"><span class="biz-type-icon">📋</span><span>Other</span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--ghost" onclick="goStep(1)">← Back</button>
+            <button class="btn btn--primary" onclick="goStep(3)">Next — Machine Details <svg class="btn-arrow" viewBox="0 0 18 18" fill="none"><path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- ── STEP 3: Machine Details ── -->
+        <div class="form-step" id="step-3">
+          <div class="form-step-header">
+            <div class="form-step-num">03</div>
+            <div>
+              <div class="form-step-title">Machine Details</div>
+              <div class="form-step-sub">What equipment needs attention?</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="field-label">Machine Brand <span class="field-req">*</span></label>
+              <select class="field-input field-select" id="f-brand">
+                <option value="" disabled selected>Select brand</option>
+                <option>Gaggia</option>
+                <option>La Marzocco</option>
+                <option>Nuova Simonelli</option>
+                <option>Rancilio</option>
+                <option>Jura</option>
+                <option>De'Longhi</option>
+                <option>Breville</option>
+                <option>Rocket Espresso</option>
+                <option>Slayer</option>
+                <option>Victoria Arduino</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Model <span class="field-optional">(optional)</span></label>
+              <input type="text" class="field-input" id="f-model" placeholder="e.g. Vetro 2 Group, Strada EP">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Number of Machines <span class="field-req">*</span></label>
+              <div class="counter-wrap">
+                <button class="counter-btn" onclick="changeCount(-1)" type="button">−</button>
+                <span class="counter-val" id="machineCount">1</span>
+                <button class="counter-btn" onclick="changeCount(1)" type="button">+</button>
+              </div>
+            </div>
+            <div class="form-field">
+              <label class="field-label">Grinder Included?</label>
+              <div class="toggle-wrap">
+                <label class="toggle-option">
+                  <input type="radio" name="grinder" value="Yes">
+                  <span class="toggle-pill">Yes</span>
+                </label>
+                <label class="toggle-option">
+                  <input type="radio" name="grinder" value="No" checked>
+                  <span class="toggle-pill">No</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--ghost" onclick="goStep(2)">← Back</button>
+            <button class="btn btn--primary" onclick="goStep(4)">Next — Issue Details <svg class="btn-arrow" viewBox="0 0 18 18" fill="none"><path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- ── STEP 4: Issue Details ── -->
+        <div class="form-step" id="step-4">
+          <div class="form-step-header">
+            <div class="form-step-num">04</div>
+            <div>
+              <div class="form-step-title">Issue Details</div>
+              <div class="form-step-sub">Describe the problem and how urgent it is</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field form-field--full">
+              <label class="field-label">What's the problem? <span class="field-req">*</span></label>
+              <div class="issue-options">
+                <label class="issue-option">
+                  <input type="radio" name="issue" value="Not heating">
+                  <span class="issue-card">
+                    <span class="issue-icon">🌡️</span>
+                    <span class="issue-label">Not heating</span>
+                  </span>
+                </label>
+                <label class="issue-option">
+                  <input type="radio" name="issue" value="No pressure">
+                  <span class="issue-card">
+                    <span class="issue-icon">💨</span>
+                    <span class="issue-label">No pressure</span>
+                  </span>
+                </label>
+                <label class="issue-option">
+                  <input type="radio" name="issue" value="Leaking">
+                  <span class="issue-card">
+                    <span class="issue-icon">💧</span>
+                    <span class="issue-label">Leaking</span>
+                  </span>
+                </label>
+                <label class="issue-option">
+                  <input type="radio" name="issue" value="Grinder issue">
+                  <span class="issue-card">
+                    <span class="issue-icon">⚙️</span>
+                    <span class="issue-label">Grinder issue</span>
+                  </span>
+                </label>
+                <label class="issue-option">
+                  <input type="radio" name="issue" value="Other">
+                  <span class="issue-card">
+                    <span class="issue-icon">📝</span>
+                    <span class="issue-label">Other</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="form-field form-field--full" id="other-desc-wrap" style="display:none;">
+              <label class="field-label">Describe the issue <span class="field-req">*</span></label>
+              <textarea class="field-input field-textarea" id="f-issue-desc" placeholder="Please describe what's happening with your machine..." rows="3"></textarea>
+            </div>
+            <div class="form-field form-field--full">
+              <label class="field-label">Urgency Level <span class="field-req">*</span></label>
+              <div class="urgency-options">
+                <label class="urgency-option">
+                  <input type="radio" name="urgency" value="urgent">
+                  <span class="urgency-card urgency-card--red">
+                    <span class="urgency-icon">🚨</span>
+                    <span class="urgency-title">Urgent</span>
+                    <span class="urgency-sub">Same day</span>
+                  </span>
+                </label>
+                <label class="urgency-option">
+                  <input type="radio" name="urgency" value="soon">
+                  <span class="urgency-card urgency-card--amber">
+                    <span class="urgency-icon">⏱</span>
+                    <span class="urgency-title">Soon</span>
+                    <span class="urgency-sub">Within 24–48 hrs</span>
+                  </span>
+                </label>
+                <label class="urgency-option">
+                  <input type="radio" name="urgency" value="flexible">
+                  <span class="urgency-card urgency-card--green">
+                    <span class="urgency-icon">📅</span>
+                    <span class="urgency-title">Flexible</span>
+                    <span class="urgency-sub">When convenient</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--ghost" onclick="goStep(3)">← Back</button>
+            <button class="btn btn--primary" onclick="goStep(5)">Next — Schedule <svg class="btn-arrow" viewBox="0 0 18 18" fill="none"><path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- ── STEP 5: Scheduling ── -->
+        <div class="form-step" id="step-5">
+          <div class="form-step-header">
+            <div class="form-step-num">05</div>
+            <div>
+              <div class="form-step-title">Scheduling</div>
+              <div class="form-step-sub">When works best for you?</div>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="field-label">Preferred Date <span class="field-req">*</span></label>
+              <input type="date" class="field-input" id="f-date">
+            </div>
+            <div class="form-field">
+              <label class="field-label">Preferred Time Window <span class="field-req">*</span></label>
+              <select class="field-input field-select" id="f-time">
+                <option value="" disabled selected>Select a window</option>
+                <option>Morning (8:00 – 11:00)</option>
+                <option>Late Morning (11:00 – 13:00)</option>
+                <option>Afternoon (13:00 – 16:00)</option>
+                <option>Late Afternoon (16:00 – 18:00)</option>
+              </select>
+            </div>
+            <div class="form-field form-field--full">
+              <label class="field-label">Additional Notes <span class="field-optional">(optional)</span></label>
+              <textarea class="field-input field-textarea" id="f-notes" placeholder="Any other details we should know — access instructions, gate codes, specific contact on site..." rows="3"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn--ghost" onclick="goStep(4)">← Back</button>
+            <button class="btn btn--primary btn--large" onclick="submitBooking()" id="submitBtn">
+              Confirm Booking
+              <svg class="btn-arrow" viewBox="0 0 18 18" fill="none"><path d="M3 9H15M10 4L15 9L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── SUCCESS STATE ── -->
+        <div class="form-step form-success" id="step-success">
+          <div class="success-icon">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="24" fill="url(#sg)"/>
+              <path d="M14 24L21 31L34 17" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs><linearGradient id="sg" x1="0" y1="0" x2="48" y2="48"><stop stop-color="#4A2511"/><stop offset="1" stop-color="#C47A2B"/></linearGradient></defs>
+            </svg>
+          </div>
+          <h3 class="success-title">Booking Received!</h3>
+          <p class="success-body">Thank you — your repair request has been submitted. Our team will contact you within a few hours to confirm your appointment.</p>
+          <div class="success-detail">
+            <div class="success-row"><span>📞</span><span>We'll call or WhatsApp you first</span></div>
+            <div class="success-row"><span>📧</span><span>A confirmation will be sent to your email</span></div>
+            <div class="success-row"><span>📍</span><span>Serving Zanzibar &amp; Dar es Salaam</span></div>
+          </div>
+          <a href="mailto:info@zandarcoffee.com" class="btn btn--ghost" style="margin-top:24px;">Email us directly: info@zandarcoffee.com</a>
+        </div>
+
+      </div><!-- /.booking-form-card -->
+    </div><!-- /.booking-wrap -->
   </div>
 </section>
 
@@ -2181,6 +3009,67 @@
      SCRIPTS
 ============================================================ -->
 <script>
+  // ── Booking Form Logic ──────────────────────────────
+  let currentStep = 1;
+  let machineCount = 1;
+
+  function goStep(n) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    const curDot = document.querySelector('[data-step="' + currentStep + '"]');
+    curDot.classList.add('done');
+    curDot.classList.remove('active');
+    const lines = document.querySelectorAll('.progress-line');
+    if (currentStep - 1 < lines.length) lines[currentStep - 1].classList.add('done');
+    currentStep = n;
+    const nextEl = document.getElementById('step-' + n);
+    if (nextEl) {
+      nextEl.classList.add('active');
+      const nextDot = document.querySelector('[data-step="' + n + '"]');
+      nextDot.classList.add('active');
+      nextDot.classList.remove('done');
+    }
+    const navbar = document.getElementById('navbar');
+    const top = document.getElementById('contact').getBoundingClientRect().top + window.scrollY - navbar.offsetHeight - 8;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  function changeCount(delta) {
+    machineCount = Math.max(1, machineCount + delta);
+    document.getElementById('machineCount').textContent = machineCount;
+  }
+
+  function submitBooking() {
+    const btn = document.getElementById('submitBtn');
+    btn.textContent = 'Submitting…';
+    btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('step-5').classList.remove('active');
+      document.getElementById('step-success').classList.add('active');
+      document.querySelectorAll('.progress-step').forEach(s => { s.classList.add('done'); s.classList.remove('active'); });
+      document.querySelectorAll('.progress-line').forEach(l => l.classList.add('done'));
+      const navbar = document.getElementById('navbar');
+      const top = document.getElementById('contact').getBoundingClientRect().top + window.scrollY - navbar.offsetHeight - 8;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }, 900);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Show/hide "Other" textarea
+    document.querySelectorAll('input[name="issue"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const wrap = document.getElementById('other-desc-wrap');
+        if (wrap) wrap.style.display = radio.value === 'Other' && radio.checked ? 'block' : 'none';
+      });
+    });
+    // Set min date to today
+    const dateInput = document.getElementById('f-date');
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.min = today;
+      dateInput.value = today;
+    }
+  });
+
   // Mobile nav hamburger
   const hamburger = document.getElementById('navHamburger');
   const drawer = document.getElementById('mobileDrawer');
